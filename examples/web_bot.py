@@ -3,10 +3,6 @@ import streamlit as st
 from adapter import ChatBot, ChatCompletion, ChatMessage, Baichuan2ChatCompletion, ChatGLM2ChatCompletion
 
 
-st.set_page_config(page_title="Bot")
-st.title("Bot")
-
-
 # use = "baichuan2"
 use = "chatglm2"
 
@@ -21,6 +17,10 @@ def service_loader() -> ChatCompletion:
             "../ChatGLM2-6B/THUDM/chatglm2-6b")
     print("init service done")
     return serivce
+
+
+st.set_page_config(page_title="Bot")
+st.title("Bot")
 
 
 @st.cache_resource
@@ -78,4 +78,8 @@ def main(system=""):
 
 
 if __name__ == "__main__":
+    """
+    run on the shell:
+    PYTHONPATH=/this/repo/path streamlit run web_bot.py
+    """
     main()

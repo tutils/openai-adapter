@@ -11,4 +11,4 @@ Let the open source LLMs provide OpenAI API interface services.
 
 ## Usage
 
-See [examples](https://github.com/tutils/openai-adapter/tree/main/examples)
+See [examples](https://github.com/tutils/openai-adapter/tree/main/examples).

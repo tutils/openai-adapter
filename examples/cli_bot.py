@@ -82,4 +82,8 @@ def main(system="") -> None:
 
 
 if __name__ == "__main__":
+    """
+    run on the shell:
+    PYTHONPATH=/this/repo/path python cli_bot.py
+    """
     main()
