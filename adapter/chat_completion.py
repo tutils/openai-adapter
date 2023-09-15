@@ -32,6 +32,6 @@ class ChatCompletion(ABC):
     def num_tokens_from_messages(self, messages: List[ChatMessage]) -> int:
         res: int = 0
         for message in messages:
-            for k, v in message.items():
-                res += self.num_tokens(v)
+            res += self.num_tokens(message.role)
+            res += self.num_tokens(message.content)
         return res

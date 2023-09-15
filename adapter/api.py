@@ -179,6 +179,7 @@ async def models() -> ModelsResponse:
 
 def build_chat_compl_resp(id: str, model: str, messages) -> ChatCompletionResponse:
     completion = _service.chat(messages)
+    print(completion)
 
     prompt_tokens = _service.num_tokens_from_messages(messages)
     completion_tokens = _service.num_tokens(completion)
@@ -222,6 +223,7 @@ def build_chat_compl_streaming_resp(id: str, model: str, messages) -> Iterator[s
     yield rsp.model_dump_json()
 
     for delta_compl in completion_gen:
+        print(delta_compl, end="", flush=True)
         if delta_compl != "":
             delta = ChatCompletionMessageContentOnly(
                 content=delta_compl,
@@ -240,7 +242,7 @@ def build_chat_compl_streaming_resp(id: str, model: str, messages) -> Iterator[s
             )],
         )
         yield rsp.model_dump_json()
-
+    print()
     yield "[DONE]"
 
 

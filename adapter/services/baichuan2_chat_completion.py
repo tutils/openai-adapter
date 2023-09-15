@@ -25,6 +25,15 @@ class Baichuan2ChatCompletion(ChatCompletion):
     def _build_input(self, messages: List[ChatMessage]) -> List[Dict[Literal["role", "content"], str]]:
         msgs: List[Dict[Literal["role", "content"], str]] = []
         for message in messages:
+            if len(msgs) > 0:
+                if message.role == msgs[-1]["role"]:
+                    if message.role == "system":
+                        msgs[-1]["content"] += message.content
+                    else:
+                        msgs[-1]["content"] += f"\n{message.content}"
+                    continue
+                elif message.role == "system":
+                    continue
             msgs.append({
                 "role": message.role,
                 "content": message.content,
