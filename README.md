@@ -44,7 +44,7 @@ tree
 │       └── Baichuan2-13B-Chat-4bits
 ├── ChatGLM2-6B
 │   └── THUDM
-│       └── chatglm2-6b
+│       └── chatglm2-6b-int4
 ├── Qwen
 │   └── Qwen
 │       └── Qwen-14B-Chat-Int4
