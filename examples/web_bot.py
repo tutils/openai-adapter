@@ -1,22 +1,21 @@
+import os
 import torch
 import streamlit as st
 from adapter import ChatBot, ChatCompletion, create_chat_completion_service
 
 
-# use = "baichuan2"
-# use = "chatglm2"
-use = "qwen"
-
+use_service = os.environ.get("USE_SERVICE")
 service_params = {
-    "baichuan2": "../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits",
-    "chatglm2": "../ChatGLM2-6B/THUDM/chatglm2-6b",
-    "qwen": "../Qwen/Qwen/Qwen-14B-Chat-Int4",
+    "baichuan2": ["../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits", True],
+    "chatglm2": ["../ChatGLM2-6B/THUDM/chatglm2-6b-int4"],
+    "qwen": ["../Qwen/Qwen/Qwen-14B-Chat-Int4", True],
 }
 
 
 def service_loader() -> ChatCompletion:
     print("init service ...")
-    service = create_chat_completion_service(use, service_params[use])
+    service = create_chat_completion_service(
+        use_service, *service_params[use_service])
     print("init service done")
     return service
 
@@ -43,7 +42,7 @@ def init_chat_history() -> None:
     history = bot.history
 
     with st.chat_message("bot", avatar='🤖'):
-        st.markdown(f"当前大模型：{use}")
+        st.markdown(f"当前大模型：{use_service}")
 
     for message in history:
         if not message.role in ["user", "assistant"]:
@@ -82,6 +81,6 @@ def main(system=""):
 if __name__ == "__main__":
     """
     run on the shell:
-    PYTHONPATH=/this/repo/path streamlit run web_bot.py
+    PYTHONPATH=/this/repo/path USE_SERVICE=<baichuan2|chatglm2|qwen> streamlit run web_bot.py
     """
     main()

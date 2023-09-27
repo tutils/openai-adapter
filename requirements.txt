@@ -1,0 +1,8 @@
+torch
+transformers
+colorama
+pydantic
+sse-starlette
+fastapi
+uvicorn
+streamlit

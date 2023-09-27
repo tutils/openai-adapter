@@ -1,5 +1,4 @@
-from typing import List, Tuple, Dict, Iterator, Literal
-import torch
+from typing import List, Tuple, Iterator
 from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
 from transformers.generation.utils import GenerationConfig
 from adapter.chat_completion import ChatCompletion, ChatMessage, register_chat_completion_service

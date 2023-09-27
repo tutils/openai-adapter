@@ -7,20 +7,18 @@ from tempfile import NamedTemporaryFile
 from adapter import ChatBot, ChatCompletion, create_chat_completion_service
 
 
-# use = "baichuan2"
-# use = "chatglm2"
-use = "qwen"
-
+use_service = os.environ.get("USE_SERVICE")
 service_params = {
-    "baichuan2": "../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits",
-    "chatglm2": "../ChatGLM2-6B/THUDM/chatglm2-6b",
-    "qwen": "../Qwen/Qwen/Qwen-14B-Chat-Int4",
+    "baichuan2": ["../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits", True],
+    "chatglm2": ["../ChatGLM2-6B/THUDM/chatglm2-6b-int4"],
+    "qwen": ["../Qwen/Qwen/Qwen-14B-Chat-Int4", True],
 }
 
 
 def service_loader() -> ChatCompletion:
     print("init service ...")
-    service = create_chat_completion_service(use, service_params[use])
+    service = create_chat_completion_service(
+        use_service, *service_params[use_service])
     print("init service done")
     return service
 
@@ -31,7 +29,7 @@ def clear_screen() -> None:
     else:
         os.system("clear")
     print(Fore.YELLOW + Style.BRIGHT +
-          f"当前大模型：{use}，输入进行对话，vim 多行输入，clear 清空历史，CTRL+C 中断生成，stream 开关流式生成，exit 结束。")
+          f"当前大模型：{use_service}，输入进行对话，vim 多行输入，clear 清空历史，CTRL+C 中断生成，stream 开关流式生成，exit 结束。")
 
 
 def vim_input() -> str:
@@ -86,6 +84,6 @@ def main(system="") -> None:
 if __name__ == "__main__":
     """
     run on the shell:
-    PYTHONPATH=/this/repo/path python cli_bot.py
+    PYTHONPATH=/this/repo/path USE_SERVICE=<baichuan2|chatglm2|qwen> python cli_bot.py
     """
     main()

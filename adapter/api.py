@@ -115,7 +115,6 @@ class ModelsResponse(BaseModel):
 
 
 _service: ChatCompletion = None
-
 _service_loader: Callable[[], ChatCompletion] = None
 
 
