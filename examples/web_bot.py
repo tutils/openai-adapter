@@ -5,7 +5,7 @@ from adapter import ChatBot, ChatCompletion, create_chat_completion_service
 
 
 use_service = os.environ.get("USE_SERVICE")
-service_params = {
+service_args = {
     "baichuan2": ["../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits", True],
     "chatglm2": ["../ChatGLM2-6B/THUDM/chatglm2-6b-int4"],
     "qwen": ["../Qwen/Qwen/Qwen-14B-Chat-Int4", True],
@@ -15,7 +15,7 @@ service_params = {
 def service_loader() -> ChatCompletion:
     print("init service ...")
     service = create_chat_completion_service(
-        use_service, *service_params[use_service])
+        use_service, *service_args[use_service])
     print("init service done")
     return service
 
