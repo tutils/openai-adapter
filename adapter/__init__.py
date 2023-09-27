@@ -1,8 +1,9 @@
 from adapter.api import app, set_service_loader
 from adapter.bot import ChatBot
-from adapter.chat_completion import ChatCompletion, ChatMessage
+from adapter.chat_completion import ChatCompletion, ChatMessage, create_chat_completion_service
 from adapter.services.baichuan2_chat_completion import Baichuan2ChatCompletion
 from adapter.services.chatglm2_chat_completion import ChatGLM2ChatCompletion
+from adapter.services.qwen_chat_completion import QwenChatCompletion
 
 
 __all__ = [
@@ -11,6 +12,8 @@ __all__ = [
     "ChatBot",
     "ChatCompletion",
     "ChatMessage",
+    "create_chat_completion_service",
     "Baichuan2ChatCompletion",
     "ChatGLM2ChatCompletion",
+    "QwenChatCompletion",
 ]

@@ -1,5 +1,5 @@
 from typing import List
-from typing import List, Iterator, Literal
+from typing import List, Dict, Any, Type, ClassVar, Iterator, Literal
 from abc import ABC, abstractmethod
 from transformers import PreTrainedModel, PreTrainedTokenizer
 from pydantic import BaseModel
@@ -35,3 +35,15 @@ class ChatCompletion(ABC):
             res += self.num_tokens(message.role)
             res += self.num_tokens(message.content)
         return res
+
+
+_services: Dict[str, Type[ChatCompletion]] = {}
+
+
+def register_chat_completion_service(name: str, service: Type[ChatCompletion]):
+    global _services
+    _services[name] = service
+
+
+def create_chat_completion_service(name: str, *args, **kwargs) -> ChatCompletion:
+    return _services[name](*args, **kwargs)

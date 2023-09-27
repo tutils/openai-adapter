@@ -1,8 +1,10 @@
 from typing import List, Tuple, Dict, Iterator, Literal
 import torch
 from transformers import AutoModel, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
-from transformers.generation.utils import GenerationConfig
-from adapter.chat_completion import ChatCompletion, ChatMessage
+from adapter.chat_completion import ChatCompletion, ChatMessage, register_chat_completion_service
+
+
+SERVICE_NAME = "chatglm2"
 
 
 class ChatGLM2ChatCompletion(ChatCompletion):
@@ -18,11 +20,11 @@ class ChatGLM2ChatCompletion(ChatCompletion):
         super().__init__(model, tokenizer)
 
     def _build_input(self, messages: List[ChatMessage]) -> Tuple[str, List[Tuple[str, str]]]:
-        query = messages[-1].content
+        query = ""
         history: List[Tuple[str, str]] = []
         wait_user = True
         user, assistant = "", ""
-        for message in messages[:-1]:
+        for message in messages:
             if wait_user:
                 # appending user
                 if message.role in ["user", "system"]:
@@ -45,9 +47,12 @@ class ChatGLM2ChatCompletion(ChatCompletion):
                     else:
                         assistant += "\n" + message.content
 
-        if not wait_user:
+        if wait_user:
+            query = user
+        else:
             history.append((user, assistant))
 
+        # print(f"<query>\n{query}\n<history>\n{history}")
         return query, history
 
     def chat(self, messages: List[ChatMessage]) -> str:
@@ -74,3 +79,6 @@ class ChatGLM2ChatCompletion(ChatCompletion):
             position = len(completion)
             yield delta
         # print()
+
+
+register_chat_completion_service(SERVICE_NAME, ChatGLM2ChatCompletion)

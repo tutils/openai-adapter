@@ -1,21 +1,24 @@
 import adapter
-from adapter import ChatCompletion, Baichuan2ChatCompletion, ChatGLM2ChatCompletion
+from adapter import ChatCompletion, create_chat_completion_service
 import uvicorn
 
-use = "baichuan2"
+
+# use = "baichuan2"
 # use = "chatglm2"
+use = "qwen"
+
+service_args = {
+    "baichuan2": ["../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits", True],
+    "chatglm2": ["../ChatGLM2-6B/THUDM/chatglm2-6b"],
+    "qwen": ["../Qwen/Qwen/Qwen-14B-Chat-Int4", True],
+}
 
 
 def service_loader() -> ChatCompletion:
     print("init service ...")
-    if use == "baichuan2":
-        serivce = Baichuan2ChatCompletion(
-            "../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits")
-    elif use == "chatglm2":
-        serivce = ChatGLM2ChatCompletion(
-            "../ChatGLM2-6B/THUDM/chatglm2-6b")
+    service = create_chat_completion_service(use, *service_args[use])
     print("init service done")
-    return serivce
+    return service
 
 
 adapter.set_service_loader(service_loader)

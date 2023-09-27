@@ -1,22 +1,24 @@
 import torch
 import streamlit as st
-from adapter import ChatBot, ChatCompletion, ChatMessage, Baichuan2ChatCompletion, ChatGLM2ChatCompletion
+from adapter import ChatBot, ChatCompletion, create_chat_completion_service
 
 
 # use = "baichuan2"
-use = "chatglm2"
+# use = "chatglm2"
+use = "qwen"
+
+service_params = {
+    "baichuan2": "../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits",
+    "chatglm2": "../ChatGLM2-6B/THUDM/chatglm2-6b",
+    "qwen": "../Qwen/Qwen/Qwen-14B-Chat-Int4",
+}
 
 
 def service_loader() -> ChatCompletion:
     print("init service ...")
-    if use == "baichuan2":
-        serivce = Baichuan2ChatCompletion(
-            "../Baichuan2/baichuan-inc/Baichuan2-13B-Chat-4bits")
-    elif use == "chatglm2":
-        serivce = ChatGLM2ChatCompletion(
-            "../ChatGLM2-6B/THUDM/chatglm2-6b")
+    service = create_chat_completion_service(use, service_params[use])
     print("init service done")
-    return serivce
+    return service
 
 
 st.set_page_config(page_title="Bot")
